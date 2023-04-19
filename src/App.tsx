@@ -17,9 +17,11 @@ export default function App() {
       .map((fn) => {
         return summarize({
           key: fn.name,
+          digits: 8,
           values: runProbes({
             func: () => fn(...items),
             iterations,
+            digits: 8,
           }),
         });
       })
@@ -75,7 +77,9 @@ export default function App() {
       </section>
 
       <footer style={{ marginTop: "24px", display: "flex" }}>
-        <button onClick={() => setCounter(counter + 1)}>Test</button>
+        <button onClick={() => setCounter(counter + 1)}>
+          Test {counter + 1}
+        </button>
         <div style={{ display: "flex", margin: "0 20px" }}>
           <span>Iterations: </span>
           <input
