@@ -9,5 +9,4 @@ const sum = (...items: number[]): number => {
 runProbes({
   iterations: 1000,
   func: () => sum(1, 2, 3, 4, 5, 6),
-  digits: 2,
 });

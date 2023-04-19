@@ -1,14 +1,13 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { runProbes } from "./performance/run-probes";
 import { summarize } from "./performance/summarize";
 import { forEachSum, forSum, reduceSum, whileSum } from "./sum";
 
 import "./styles.css";
 
-export default function App() {
+const useBenchmark = () => {
   const [counter, setCounter] = useState(0);
   const [iterations, setIterations] = useState(100);
-  const sumsRef = useRef<Record<string, number>>({});
 
   const results = useMemo(() => {
     const items = Array.from({ length: iterations }, (_, i) => i);
@@ -17,11 +16,9 @@ export default function App() {
       .map((fn) => {
         return summarize({
           key: fn.name,
-          digits: 8,
           values: runProbes({
             func: () => fn(...items),
             iterations,
-            digits: 8,
           }),
         });
       })
@@ -31,20 +28,15 @@ export default function App() {
         return -1;
       });
 
-    const [{ key }] = results;
-
-    sumsRef.current[key] = (sumsRef.current[key] ?? 0) + 1;
-
     return results;
   }, [counter]);
 
-  const rank = Object.entries(sumsRef.current)
-    .filter(([_, value]) => value !== undefined)
-    .sort(([, valueA], [, valueB]) => {
-      if (valueA < valueB) return 1;
-      if (valueA === valueB) return 0;
-      return -1;
-    });
+  return { counter, setCounter, iterations, setIterations, results };
+};
+
+export default function App() {
+  const { counter, setCounter, iterations, setIterations, results } =
+    useBenchmark();
 
   return (
     <div className="App">
@@ -64,18 +56,6 @@ export default function App() {
         </div>
       ))}
 
-      <section style={{ margin: "24px 0 0 0" }}>
-        <h1>Rank</h1>
-        {rank.map(([key, value], idx) => (
-          <div key={key}>
-            <span>({idx + 1}) </span>
-            <span>
-              <b>{key}</b> has won {value} times
-            </span>
-          </div>
-        ))}
-      </section>
-
       <footer style={{ marginTop: "24px", display: "flex" }}>
         <button onClick={() => setCounter(counter + 1)}>
           Test {counter + 1}
@@ -85,10 +65,14 @@ export default function App() {
           <input
             type="number"
             value={iterations}
+            min={1}
             onChange={(e) => {
+              if (e.target.value === "") {
+                return;
+              }
+
               setIterations(+e.target.value);
               setCounter(0);
-              sumsRef.current = {};
             }}
           />
         </div>

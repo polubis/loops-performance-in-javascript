@@ -7,20 +7,19 @@ interface Summary<K extends string> {
 interface Config<K extends string> {
   key: K;
   values: number[];
-  digits?: number;
 }
 
 const summarize = <K extends string>({
   key,
   values,
-  digits = 4,
 }: Config<K>): Summary<K> => {
   // The total duration.
-  const total = Number(
-    values.reduce((acc, sum) => acc + sum, 0).toFixed(digits)
+  const total = values.reduce(
+    (acc, sum) => parseFloat(acc.toFixed(4)) + parseFloat(sum.toFixed(4)),
+    0
   );
   // The arithmetic average.
-  const average = Number((total / values.length).toFixed(digits));
+  const average = parseFloat((total / values.length).toFixed(4));
 
   return {
     key,
