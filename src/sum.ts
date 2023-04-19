@@ -34,4 +34,16 @@ const forEachSum = (...items: number[]): number => {
   return sum;
 };
 
-export { reduceSum, whileSum, forSum, forEachSum };
+const recursiveSum = (...items: number[]): number => {
+  const calculate = (i = 0, sum = 0): number => {
+    if (i === items.length) {
+      return sum;
+    }
+
+    return calculate(i + 1, (sum += items[i]));
+  };
+
+  return calculate();
+};
+
+export { reduceSum, whileSum, forSum, forEachSum, recursiveSum };

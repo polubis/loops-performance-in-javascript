@@ -1,6 +1,5 @@
 interface Summary<K extends string> {
   key: K;
-  average: number;
   total: number;
 }
 
@@ -14,17 +13,18 @@ const summarize = <K extends string>({
   values,
 }: Config<K>): Summary<K> => {
   // The total duration.
-  const total = values.reduce(
-    (acc, sum) => parseFloat(acc.toFixed(4)) + parseFloat(sum.toFixed(4)),
-    0
+  const total = parseFloat(
+    values
+      .reduce(
+        (acc, sum) => parseFloat(acc.toFixed(4)) + parseFloat(sum.toFixed(4)),
+        0
+      )
+      .toFixed(4)
   );
-  // The arithmetic average.
-  const average = parseFloat((total / values.length).toFixed(4));
 
   return {
     key,
     total,
-    average,
   };
 };
 
