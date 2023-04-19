@@ -7,7 +7,7 @@ import "./styles.css";
 
 export default function App() {
   const [counter, setCounter] = useState(0);
-  const [iterations, setIterations] = useState(10000);
+  const [iterations, setIterations] = useState(100);
   const sumsRef = useRef<Record<string, number>>({});
 
   const results = useMemo(() => {
@@ -36,18 +36,43 @@ export default function App() {
     return results;
   }, [counter]);
 
+  const rank = Object.entries(sumsRef.current)
+    .filter(([_, value]) => value !== undefined)
+    .sort(([, valueA], [, valueB]) => {
+      if (valueA < valueB) return 1;
+      if (valueA === valueB) return 0;
+      return -1;
+    });
+
   return (
     <div className="App">
-      {results.map((result) => (
-        <div key={result.key} style={{ display: "flex", alignItems: "center" }}>
+      {results.map((result, idx) => (
+        <div
+          key={result.key}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            color: idx === 0 ? "green" : "black",
+          }}
+        >
           <pre>{JSON.stringify(result)}</pre>
           <div style={{ marginLeft: "8px" }}>
-            {sumsRef.current[result.key] && (
-              <>Number of wins: {sumsRef.current[result.key]}</>
-            )}
+            {idx === 0 && <>Winner in this round</>}
           </div>
         </div>
       ))}
+
+      <section style={{ margin: "24px 0 0 0" }}>
+        <h1>Rank</h1>
+        {rank.map(([key, value], idx) => (
+          <div key={key}>
+            <span>({idx + 1}) </span>
+            <span>
+              <b>{key}</b> has won {value} times
+            </span>
+          </div>
+        ))}
+      </section>
 
       <footer style={{ marginTop: "24px", display: "flex" }}>
         <button onClick={() => setCounter(counter + 1)}>Test</button>

@@ -16,7 +16,9 @@ const summarize = <K extends string>({
   digits = 4,
 }: Config<K>): Summary<K> => {
   // The total duration.
-  const total = values.reduce((acc, sum) => acc + sum, 0);
+  const total = Number(
+    values.reduce((acc, sum) => acc + sum, 0).toFixed(digits)
+  );
   // The arithmetic average.
   const average = Number((total / values.length).toFixed(digits));
 
