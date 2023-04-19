@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { runProbes } from "./performance/run-probes";
 import { summarize } from "./performance/summarize";
-import { forEachSum, forSum, recursiveSum, reduceSum, whileSum } from "./sum";
+import { forEachSum, forSum, reduceSum, whileSum } from "./sum";
 
 import "./styles.css";
 
@@ -12,7 +12,7 @@ const useBenchmark = () => {
   const results = useMemo(() => {
     const items = Array.from({ length: iterations }, (_, i) => i);
 
-    const results = [forEachSum, forSum, reduceSum, whileSum, recursiveSum]
+    const results = [forEachSum, forSum, reduceSum, whileSum]
       .map((fn) => {
         return summarize({
           key: fn.name,
