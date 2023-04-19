@@ -87,6 +87,7 @@ export default function App() {
             value={iterations}
             onChange={(e) => {
               setIterations(+e.target.value);
+              setCounter(0);
               sumsRef.current = {};
             }}
           />
