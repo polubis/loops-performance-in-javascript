@@ -11,7 +11,7 @@ const runProbes = ({ func, iterations }: Config): number[] => {
   const result: number[] = [];
 
   while (i < iterations) {
-    // Rounding and conversion to a number.
+    // Pushing the time to result array.
     result.push(measure(func));
     i++;
   }
