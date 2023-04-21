@@ -1,6 +1,6 @@
 import { measure } from "../performance/measure";
 
-// Our function, of which performance we want to measure.
+// Our patient to test.
 const sum = (...items: number[]): number => {
   return items.reduce((acc, sum) => acc + sum, 0);
 };

@@ -1,5 +1,4 @@
-// We will receive function as a parameter, call it, and then
-// measure the time it took to call it.
+// We calculate the duration of any function.
 const measure = (func: () => void): number => {
   const start = performance.now();
   func();
