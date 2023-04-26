@@ -1,6 +1,6 @@
 import { runProbes } from "../performance/run-probes";
 
-// Our function, of which performance we want to measure.
+// Function of which performance we want to measure.
 const sum = (...items: number[]): number => {
   return items.reduce((acc, sum) => acc + sum, 0);
 };
